@@ -27,34 +27,4 @@
         </div>
     </header>
 
-    <!-- Bottom Navigation for Mobile -->
-    <nav class="bottom-nav">
-        <ul class="bottom-nav-list">
-            <li class="bottom-nav-item">
-                <a href="index.php" class="bottom-nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-            </li>
-            <li class="bottom-nav-item">
-                <a href="about.php" class="bottom-nav-link">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About</span>
-                </a>
-            </li>
-            <li class="bottom-nav-item">
-                <a href="products.php" class="bottom-nav-link">
-                    <i class="fas fa-box"></i>
-                    <span>Products</span>
-                </a>
-            </li>
-            <li class="bottom-nav-item">
-                <a href="contact.php" class="bottom-nav-link">
-                    <i class="fas fa-envelope"></i>
-                    <span>Contact</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
     <main> 
