@@ -22,7 +22,7 @@
         </div>
         <div class="about-img-row">
             <img src="assets/about-us.jpg" alt="About Prime Insulation" class="about-img-home">
-            <img src="assets/plant.jpg" alt="About Prime Insulation 2" class="about-img-home">
+            <img src="assets/Plant.jpg" alt="About Prime Insulation 2" class="about-img-home">
         </div>
     </div>
 </section>
