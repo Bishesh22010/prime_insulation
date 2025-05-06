@@ -1,64 +1,81 @@
-// main.js for Prime Insulation Website
-// Add interactivity as needed 
+// Prime Insulation Website Main JavaScript
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Smooth scroll for nav links
-  document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
-    link.addEventListener('click', function (e) {
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        e.preventDefault();
-        window.scrollTo({
-          top: target.offsetTop - 70, // adjust for sticky nav height
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
+// Sticky Navigation
+const header = document.querySelector('.site-header');
+const nav = document.querySelector('.main-nav');
+const navHeight = nav.getBoundingClientRect().height;
 
-  // Mobile menu functionality
-  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-  const mainNav = document.querySelector('.main-nav');
-  const body = document.body;
-
-  if (mobileMenuBtn && mainNav) {
-    mobileMenuBtn.addEventListener('click', function() {
-      mobileMenuBtn.classList.toggle('active');
-      mainNav.classList.toggle('active');
-      body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', function(event) {
-      if (mainNav.classList.contains('active') && 
-        !mainNav.contains(event.target) && 
-        !mobileMenuBtn.contains(event.target)) {
-        mobileMenuBtn.classList.remove('active');
-        mainNav.classList.remove('active');
-        body.style.overflow = '';
-      }
-    });
-
-    // Close menu when clicking on a link
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        mobileMenuBtn.classList.remove('active');
-        mainNav.classList.remove('active');
-        body.style.overflow = '';
-      });
-    });
-  }
-
-  // Set active state for bottom navigation
-  const currentPage = window.location.pathname.split('/').pop();
-  const bottomNavLinks = document.querySelectorAll('.bottom-nav-link');
-  
-  bottomNavLinks.forEach(link => {
-    const linkPage = link.getAttribute('href');
-    if (linkPage === currentPage) {
-      link.classList.add('active');
+function stickyNav(entries) {
+    const [entry] = entries;
+    if (!entry.isIntersecting) {
+        nav.classList.add('sticky-nav');
+    } else {
+        nav.classList.remove('sticky-nav');
     }
-  });
-}); 
+}
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+    root: null,
+    threshold: 0,
+    rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
+
+// Smooth Scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Form Validation
+const contactForm = document.querySelector('.contact-form');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Basic form validation
+        const name = this.querySelector('input[name="name"]').value;
+        const email = this.querySelector('input[name="email"]').value;
+        const message = this.querySelector('textarea[name="message"]').value;
+        
+        if (!name || !email || !message) {
+            alert('Please fill in all fields');
+            return;
+        }
+        
+        if (!isValidEmail(email)) {
+            alert('Please enter a valid email address');
+            return;
+        }
+        
+        // If validation passes, you can submit the form
+        this.submit();
+    });
+}
+
+function isValidEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+// Animate on Scroll
+const animateOnScroll = () => {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    
+    elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementBottom = element.getBoundingClientRect().bottom;
+        
+        if (elementTop < window.innerHeight && elementBottom > 0) {
+            element.classList.add('visible');
+        }
+    });
+};
+
+window.addEventListener('scroll', animateOnScroll);
+window.addEventListener('load', animateOnScroll); 
