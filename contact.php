@@ -1,4 +1,12 @@
 <?php 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Include PHPMailer library files (make sure these files exist on your server)
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+require 'PHPMailer/src/Exception.php';
+
 $sent = false;
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -6,13 +14,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $message = trim($_POST['message'] ?? '');
     if ($name && $email && $message && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $to = 'primeinsulation9032@gmail.com'; // Change to your company email
-        $subject = "Contact Form Submission from $name";
-        $body = "Name: $name\nEmail: $email\nMessage:\n$message";
-        $headers = "From: $email\r\nReply-To: $email";
-        if (mail($to, $subject, $body, $headers)) {
+        $mail = new PHPMailer(true);
+        try {
+            // SMTP Configuration for Gmail
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'v3n0m.b@gmail.com'; // Your Gmail
+            $mail->Password = 'uhwbzmhxtvpofvsu'; // <-- Replace with Gmail App Password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            // Email content
+            $mail->setFrom('v3n0m.b@gmail.com', 'Website Contact');
+            $mail->addAddress('v3n0m.b@gmail.com'); // Send to yourself
+            $mail->addReplyTo($email, $name);
+            $mail->Subject = "Contact Form Submission from $name";
+            $mail->Body = "Name: $name\nEmail: $email\nMessage:\n$message";
+
+            $mail->send();
             $sent = true;
-        } else {
+        } catch (Exception $e) {
             $error = 'Sorry, there was a problem sending your message.';
         }
     } else {
@@ -55,4 +77,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </section>
-<?php include 'footer.php'; ?> 
+<?php include 'footer.php'; ?>
